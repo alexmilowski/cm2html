@@ -1,0 +1,66 @@
+body {
+  font-family: serif;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-family: sans-serif;
+}
+
+.toc summary {
+    display: block;
+    font-family: sans-serif;
+}
+
+.toc summary a:link {
+   color: black;
+   text-decoration: none;
+}
+
+.toc summary a:visited {
+   color: black;
+}
+
+.toc summary a:hover {
+   color: blue;
+}
+
+.toc > summary {
+  padding-left: 1em;
+}
+
+.toc summary.toc-1 {
+   font-size: 1.75em;
+}
+.toc summary.toc-2 {
+   font-size: 1.5em;
+   padding-left: 1em;
+}
+.toc summary.toc-3 {
+   font-size: 1.25em;
+   padding-left: 2.5em;
+}
+.toc summary.toc-4 {
+   font-size: 1.25em;
+   padding-left: 3em;
+}
+
+.toc summary.toc-1:not(:first-of-type) {
+  padding-left: 1em;
+}
+
+.toc summary.toc-2:not(:first-of-type) {
+  padding-left: 2em;
+}
+
+.toc summary.toc-3:not(:first-of-type) {
+  padding-left: 3.5em;
+}
+
+.toc summary.toc-4:not(:first-of-type) {
+  padding-left: 4.5em;
+}
+
+
+details summary::-webkit-details-marker {
+  color: green;
+}
