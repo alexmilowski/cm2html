@@ -17,7 +17,12 @@ class HTML5Renderer(CommonMark.HtmlRenderer):
    
 def main():
 
-   prolog = '<meta charset="utf-8">\n'
+   prolog = """
+   <meta charset="utf-8">
+   <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css">
+   <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+   <script>hljs.initHighlightingOnLoad();</script>
+   """
    links = [ ('stylesheet','text/css','default.css')]
    scripts = [ ]
    known_types = {
@@ -49,9 +54,9 @@ def main():
         default=False,
         help="Generate a table of contents")
    parser.add_argument(
-        '--toc-title',
+        '--autonumber-title',
         action='store_true',
-        dest='toctitle',
+        dest='autonumbertitle',
         default=False,
         help="Generate the title in the table of contents")
    parser.add_argument(
@@ -87,7 +92,7 @@ def main():
       for source in args.copyStyle:
          this_dir, this_filename = os.path.split(__file__)
          path = os.path.join(this_dir, source)
-         copyfile(path,args.copyStyle)
+         copyfile(path,source)
       
    f = args.infile
    o = args.o
@@ -131,12 +136,13 @@ def main():
             else :
                raise ValueError('Unknown extension: '+ext)
    
-   headings = toc(ast,args.autonumber) if args.toc else None
+   headings = toc(ast,args.autonumber,args.autonumbertitle) if args.toc else None
    
    renderer = HTML5Renderer()
+   title = findTitle(ast)
    o.write('<html>\n')
    o.write('<head>\n')
-   o.write('<title>{0}</title>\n'.format(findTitle(ast)))
+   o.write('<title>{0}</title>\n'.format(title))
 
    o.write(prolog)
    
@@ -156,10 +162,12 @@ def main():
    o.write('<body>\n')
    o.write('<main>\n')
    
+   o.write('<h1>{0}</h1>'.format(title))
+   
    if headings is not None:
       o.write('<header class="toc">\n')
       o.write('<h1>Table of Contents</h1>\n')
-      writeTOC(o,headings if len(headings)>1 or args.toctitle else headings[0][2],args.autonumber)   
+      writeTOC(o,headings if len(headings)>1 or args.autonumbertitle else headings[0][2],args.autonumber)   
       o.write('</header>\n')
       
    o.write('<article>\n')

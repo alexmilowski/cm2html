@@ -4,7 +4,7 @@ from CommonMark.node import Node
 def text(n):
    sb = io.StringIO()
    for node,entering in n.walker():
-      if node.t == 'text':
+      if node.t == 'text' or node.t == 'code':
          sb.write(node.literal)
    text = sb.getvalue()
    sb.close()
@@ -19,7 +19,7 @@ def findTitle(ast):
       n = n.nxt
    return title if title is not None else ""
    
-def toc(ast,autonumber):
+def toc(ast,autonumber,includetitle):
    top = [];
    current = [top];
    level = 0
@@ -47,6 +47,8 @@ def toc(ast,autonumber):
             current.append(spec[2])
             level = node.level
          tumbler = list(map(lambda x:len(x),current[0:-1]))
+         if not includetitle:
+            tumbler = tumbler[1:]
          node.id = 'h' + ''.join(map(lambda n:'-'+str(n),tumbler))
          attrs['id'] = node.id
          attrs['tumbler'] = tumbler
@@ -64,7 +66,7 @@ def dataURI(contentType,uri):
    sb = io.StringIO()
    for line in open(uri):
       sb.write(line)
-   encoded = base64.urlsafe_b64encode(bytes(sb.getvalue(),'utf-8')).decode('utf-8')
+   encoded = base64.b64encode(bytes(sb.getvalue(),'utf-8')).decode('utf-8')
    sb.close()
    return 'data:'+contentType+';base64,'+encoded
    
