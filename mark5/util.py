@@ -52,7 +52,7 @@ def toc(ast,autonumber,includetitle):
          node.id = 'h' + ''.join(map(lambda n:'-'+str(n),tumbler))
          attrs['id'] = node.id
          attrs['tumbler'] = tumbler
-         if autonumber:
+         if autonumber and node.first_child:
             first = node.first_child
             node.first_child = Node('text',first.sourcepos)
             first.prv = node.first_child
