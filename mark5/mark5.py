@@ -3,7 +3,7 @@ import argparse,io,sys,os
 from shutil import copyfile
 from ast import literal_eval
 
-from util import text,findTitle,toc,dataURI,writeTOC
+from .util import text,findTitle,toc,dataURI,writeTOC
 
 class HTML5Renderer(CommonMark.HtmlRenderer):
    def attrs(self, node):
